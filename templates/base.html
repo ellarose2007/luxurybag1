@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dashboard{% endblock %} · Luxury Bag Management System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Maison de Sac</div>
+    <div class="tag">Luxury Bag System</div>
+    <nav>
+      {% if me.role == 'admin' %}
+        <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' }}">Dashboard</a>
+        <a href="{{ url_for('bags_list') }}" class="{{ 'active' if request.endpoint in ('bags_list','bag_add','bag_edit') }}">Bag Inventory</a>
+        <a href="{{ url_for('orders_list') }}" class="{{ 'active' if request.endpoint == 'orders_list' }}">Orders</a>
+        <a href="{{ url_for('users_list') }}" class="{{ 'active' if request.endpoint in ('users_list','user_add','user_edit') }}">Users</a>
+      {% elif me.role == 'staff' %}
+        <a href="{{ url_for('staff_dashboard') }}" class="{{ 'active' if request.endpoint == 'staff_dashboard' }}">Dashboard</a>
+        <a href="{{ url_for('bags_list') }}" class="{{ 'active' if request.endpoint in ('bags_list','bag_add','bag_edit') }}">Bag Inventory</a>
+        <a href="{{ url_for('orders_list') }}" class="{{ 'active' if request.endpoint == 'orders_list' }}">Orders</a>
+      {% else %}
+        <a href="{{ url_for('customer_dashboard') }}" class="{{ 'active' if request.endpoint == 'customer_dashboard' }}">Dashboard</a>
+        <a href="{{ url_for('shop') }}" class="{{ 'active' if request.endpoint in ('shop','place_order') }}">Shop Bags</a>
+        <a href="{{ url_for('my_orders') }}" class="{{ 'active' if request.endpoint == 'my_orders' }}">My Orders</a>
+      {% endif %}
+    </nav>
+    <div class="me">
+      <strong>{{ me.full_name }}</strong>
+      <small>{{ me.role_title }}</small>
+      <a href="{{ url_for('logout') }}">Log out</a>
+    </div>
+  </aside>
+  <main class="main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

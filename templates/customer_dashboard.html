@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Welcome, {{ me.full_name.split()[0] }}</h1><p>Discover timeless pieces and track your orders.</p></div>
+  <a class="btn" href="{{ url_for('shop') }}">Shop Bags</a>
+</div>
+<div class="stats">
+  <div class="stat"><div class="label">My Orders</div><div class="value">{{ orders|length }}</div></div>
+  <div class="stat"><div class="label">Total Spent</div><div class="value">{{ spent|peso }}</div></div>
+</div>
+<div class="card">
+  <h2>Featured Bags</h2>
+  <div class="shop-grid">
+    {% for b in featured %}
+    <div class="bag-card"><div class="bag-art">👜</div>
+      <div class="bag-body"><div class="brand-name">{{ b.brand }}</div><h3>{{ b.model }}</h3>
+        <div class="price">{{ b.price|peso }}</div>
+        <a class="btn small" href="{{ url_for('place_order', bag_id=b.bag_id) }}">Order Now</a></div></div>
+    {% endfor %}
+  </div>
+</div>
+<div class="card">
+  <h2>Recent Orders</h2>
+  <div class="table-wrap"><table>
+    <tr><th>#</th><th>Bag</th><th>Qty</th><th>Total</th><th>Status</th></tr>
+    {% for o in orders %}
+    <tr><td>{{ o.order_id }}</td><td>{{ o.bag_name }}</td><td>{{ o.quantity }}</td><td>{{ o.total|peso }}</td>
+      <td><span class="badge {{ o.status }}">{{ o.status }}</span></td></tr>
+    {% else %}<tr><td colspan="5" class="empty">You have no orders yet.</td></tr>{% endfor %}
+  </table></div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>My Orders</h1><p>Track and cancel pending orders.</p></div></div>
+<div class="card"><div class="table-wrap"><table>
+  <tr><th>#</th><th>Bag</th><th>Qty</th><th>Total</th><th>Placed</th><th>Status</th><th></th></tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.order_id }}</td><td>{{ o.bag_name }}</td><td>{{ o.quantity }}</td><td>{{ o.total|peso }}</td>
+    <td>{{ o.created_at }}</td><td><span class="badge {{ o.status }}">{{ o.status }}</span></td>
+    <td>{% if o.status == 'Pending' %}
+      <form class="inline" method="post" action="{{ url_for('cancel_order', order_id=o.order_id) }}"
+            onsubmit="return confirm('Cancel this order?');">
+        <button class="btn small danger" type="submit">Cancel</button></form>{% endif %}</td>
+  </tr>
+  {% else %}<tr><td colspan="7" class="empty">You have not placed any orders yet.</td></tr>{% endfor %}
+</table></div></div>
+{% endblock %}

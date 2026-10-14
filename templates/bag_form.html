@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ mode }} Bag{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{{ mode }} Bag</h1><p>Fill in the details below.</p></div></div>
+<div class="card">
+<form method="post">
+  <div class="form-grid">
+    <div><label>Category</label>
+      <select name="category">
+        {% for c in categories %}<option value="{{ c }}" {{ 'selected' if bag.get('category') == c }}>{{ c }}</option>{% endfor %}
+      </select></div>
+    <div><label>Brand</label><input name="brand" value="{{ bag.get('brand','') }}"></div>
+    <div><label>Model</label><input name="model" value="{{ bag.get('model','') }}"></div>
+    <div><label>Color</label><input name="color" value="{{ bag.get('color','') }}"></div>
+    <div><label>Material</label><input name="material" value="{{ bag.get('material','') }}"></div>
+    <div><label>Price (₱)</label><input name="price" value="{{ bag.get('price','') }}"></div>
+    <div><label>Stock</label><input name="stock" value="{{ bag.get('stock','') }}"></div>
+    <div class="full"><label>Description</label><textarea name="description" rows="3">{{ bag.get('description','') }}</textarea></div>
+  </div>
+  <p style="margin-top:18px">
+    <button class="btn" type="submit">{{ 'Save Bag' if mode == 'Add' else 'Update Bag' }}</button>
+    <a class="btn ghost" href="{{ url_for('bags_list') }}">Cancel</a>
+  </p>
+</form></div>
+{% endblock %}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login · Luxury Bag Management System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>Maison de Sac</h1>
+    <p class="sub">Luxury Bag Management System</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    <form method="post">
+      <div class="field"><label for="username">Username</label>
+        <input id="username" name="username" value="{{ username }}" autofocus></div>
+      <div class="field"><label for="password">Password</label>
+        <input id="password" name="password" type="password"></div>
+      <button class="btn" type="submit">Log In</button>
+    </form>
+    <div class="alt">New customer? <a href="{{ url_for('register') }}">Create an account</a></div>
+    <div class="demo"><strong>Demo accounts</strong><br>
+      Admin: <code>admin</code> / <code>admin123</code><br>
+      Staff: <code>staff</code> / <code>staff123</code><br>
+      Customer: <code>customer</code> / <code>customer123</code></div>
+  </div>
+</div>
+</body>
+</html>

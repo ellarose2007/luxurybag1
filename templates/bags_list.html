@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Bag Inventory{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Bag Inventory</h1><p>Add, view, update and delete bags.</p></div>
+  <a class="btn" href="{{ url_for('bag_add') }}">+ Add Bag</a>
+</div>
+<form class="filters" method="get">
+  <input name="q" placeholder="Search brand, model, color…" value="{{ q }}">
+  <select name="category">
+    <option value="">All categories</option>
+    {% for c in categories %}<option value="{{ c }}" {{ 'selected' if c == cat }}>{{ c }}</option>{% endfor %}
+  </select>
+  <button class="btn ghost" type="submit">Filter</button>
+</form>
+<div class="card"><div class="table-wrap"><table>
+  <tr><th>ID</th><th>Bag</th><th>Category</th><th>Color / Material</th><th>Price</th><th>Fee</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
+  {% for b in bags %}
+  <tr>
+    <td>{{ b.bag_id }}</td>
+    <td><strong>{{ b.brand }}</strong><br>{{ b.model }}</td>
+    <td>{{ b.category }}</td>
+    <td>{{ b.color }}<br><small>{{ b.material }}</small></td>
+    <td>{{ b.price|peso }}</td>
+    <td>{{ b.service_fee()|peso }}</td>
+    <td>{{ b.stock }}</td>
+    <td><span class="badge {{ b.status.split()[0] }}">{{ b.status }}</span></td>
+    <td class="actions">
+      <a class="btn small ghost" href="{{ url_for('bag_edit', bag_id=b.bag_id) }}">Edit</a>
+      <form class="inline" method="post" action="{{ url_for('bag_delete', bag_id=b.bag_id) }}"
+            onsubmit="return confirm('Delete {{ b.brand }} {{ b.model }}?');">
+        <button class="btn small danger" type="submit">Delete</button></form>
+    </td>
+  </tr>
+  {% else %}<tr><td colspan="9" class="empty">No bags found.</td></tr>{% endfor %}
+</table></div></div>
+{% endblock %}

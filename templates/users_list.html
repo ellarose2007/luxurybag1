@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>User Accounts</h1><p>Manage admins, staff and customers.</p></div>
+  <a class="btn" href="{{ url_for('user_add') }}">+ Add User</a>
+</div>
+<div class="card"><div class="table-wrap"><table>
+  <tr><th>ID</th><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Actions</th></tr>
+  {% for u in users %}
+  <tr>
+    <td>{{ u.user_id }}</td><td>{{ u.full_name }}</td><td>{{ u.username }}</td><td>{{ u.email or '—' }}</td>
+    <td><span class="badge {{ u.role }}">{{ u.role_title }}</span></td>
+    <td class="actions">
+      <a class="btn small ghost" href="{{ url_for('user_edit', user_id=u.user_id) }}">Edit</a>
+      {% if u.user_id != me.user_id %}
+      <form class="inline" method="post" action="{{ url_for('user_delete', user_id=u.user_id) }}"
+            onsubmit="return confirm('Delete user {{ u.username }}?');">
+        <button class="btn small danger" type="submit">Delete</button></form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table></div></div>
+{% endblock %}

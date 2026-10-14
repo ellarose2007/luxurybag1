@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Staff Dashboard</h1><p>Inventory and order tasks for today.</p></div>
+  <a class="btn" href="{{ url_for('bag_add') }}">+ Add Bag</a>
+</div>
+<div class="stats">
+  <div class="stat"><div class="label">Bag Models</div><div class="value">{{ stats.total_bags }}</div></div>
+  <div class="stat"><div class="label">Units in Stock</div><div class="value">{{ stats.units }}</div></div>
+  <div class="stat"><div class="label">Low Stock</div><div class="value">{{ stats.low }}</div></div>
+  <div class="stat"><div class="label">Out of Stock</div><div class="value">{{ stats.out }}</div></div>
+</div>
+<div class="card">
+  <h2>Needs Attention</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Bag</th><th>Category</th><th>Stock</th><th>Status</th><th></th></tr>
+    {% for b in attention %}
+    <tr><td>{{ b.brand }} {{ b.model }}</td><td>{{ b.category }}</td><td>{{ b.stock }}</td>
+      <td><span class="badge {{ b.status.split()[0] }}">{{ b.status }}</span></td>
+      <td><a class="btn small ghost" href="{{ url_for('bag_edit', bag_id=b.bag_id) }}">Restock</a></td></tr>
+    {% else %}<tr><td colspan="5" class="empty">All bags are well stocked.</td></tr>{% endfor %}
+  </table></div>
+</div>
+<div class="card">
+  <h2>Pending Orders ({{ pending|length }})</h2>
+  <div class="table-wrap"><table>
+    <tr><th>#</th><th>Customer</th><th>Bag</th><th>Qty</th><th>Placed</th></tr>
+    {% for o in pending %}
+    <tr><td>{{ o.order_id }}</td><td>{{ o.customer_name }}</td><td>{{ o.bag_name }}</td><td>{{ o.quantity }}</td><td>{{ o.created_at }}</td></tr>
+    {% else %}<tr><td colspan="5" class="empty">No pending orders.</td></tr>{% endfor %}
+  </table></div>
+  <p><a href="{{ url_for('orders_list') }}">Manage all orders →</a></p>
+</div>
+{% endblock %}

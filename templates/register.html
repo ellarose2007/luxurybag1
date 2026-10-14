@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register · Luxury Bag Management System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>Create Account</h1>
+    <p class="sub">Customer registration</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    <form method="post">
+      <div class="field"><label>Full name</label><input name="full_name" value="{{ form.get('full_name','') }}"></div>
+      <div class="field"><label>Username</label><input name="username" value="{{ form.get('username','') }}"></div>
+      <div class="field"><label>Email (optional)</label><input name="email" value="{{ form.get('email','') }}"></div>
+      <div class="field"><label>Password</label><input name="password" type="password"></div>
+      <div class="field"><label>Confirm password</label><input name="confirm" type="password"></div>
+      <button class="btn" type="submit">Register</button>
+    </form>
+    <div class="alt">Already registered? <a href="{{ url_for('login') }}">Log in</a></div>
+  </div>
+</div>
+</body>
+</html>

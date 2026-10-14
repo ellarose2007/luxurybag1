@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Place Order{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Place Order</h1><p>{{ bag.brand }} {{ bag.model }}</p></div></div>
+<div class="card">
+  <p><strong>{{ bag.price|peso }}</strong> each · authentication fee {{ bag.service_fee()|peso }} · {{ bag.stock }} available</p>
+  <form method="post">
+    <div class="form-grid">
+      <div><label>Quantity</label><input name="quantity" value="{{ form.get('quantity','1') }}"></div>
+      <div><label>Delivery address</label><input name="address" value="{{ form.get('address','') }}"></div>
+    </div>
+    <p style="margin-top:18px">
+      <button class="btn" type="submit">Confirm Order</button>
+      <a class="btn ghost" href="{{ url_for('shop') }}">Back</a>
+    </p>
+  </form>
+</div>
+{% endblock %}
